@@ -1,44 +1,64 @@
-const http = require("http");
-const fs = require("fs");
-const path = require("path");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-const PORT = process.env.PORT || 3000;
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-const server = http.createServer((req, res) => {
-  let filePath = req.url === "/"
-    ? path.join(__dirname, "public", "index.html")
-    : path.join(__dirname, "public", req.url);
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  getDoc,
+  doc,
+  setDoc,
+  deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-  if (!filePath.startsWith(path.join(__dirname, "public"))) {
-    res.writeHead(403);
-    res.end("Acesso negado");
-    return;
-  }
 
-  fs.readFile(filePath, (err, content) => {
-    if (err) {
-      res.writeHead(404);
-      res.end("Página não encontrada");
-      return;
-    }
+const firebaseConfig = {
+  apiKey: "AIzaSyAiUnRHc3L5lOYpIlmhQQt7goLRD95N1u8",
+  authDomain: "naruto-rpg-ficha.firebaseapp.com",
+  projectId: "naruto-rpg-ficha",
+  storageBucket: "naruto-rpg-ficha.firebasestorage.app",
+  messagingSenderId: "217186972853",
+  appId: "1:217186972853:web:51d7da59ce76a37594fafc",
+  measurementId: "G-RMZKPPCB6L"
+};
 
-    const ext = path.extname(filePath);
 
-    const contentTypes = {
-      ".html": "text/html; charset=utf-8",
-      ".css": "text/css; charset=utf-8",
-      ".js": "application/javascript; charset=utf-8",
-      ".json": "application/json; charset=utf-8"
-    };
+const app = initializeApp(firebaseConfig);
 
-    res.writeHead(200, {
-      "Content-Type": contentTypes[ext] || "text/plain; charset=utf-8"
-    });
+const auth = getAuth(app);
 
-    res.end(content);
-  });
-});
+const db = getFirestore(app);
 
-server.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+const googleProvider = new GoogleAuthProvider();
+
+
+export {
+  app,
+  auth,
+  db,
+  googleProvider,
+
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+
+  collection,
+  addDoc,
+  getDocs,
+  getDoc,
+  doc,
+  setDoc,
+  deleteDoc
+};
