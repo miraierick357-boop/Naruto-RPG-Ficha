@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naruto RPG — Ficha</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, #25252d 0%, #111116 55%, #09090c 100%);
+      color: #eee;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 24px 16px;
+      text-align: center;
+      border-bottom: 1px solid #333;
+      background: rgba(10, 10, 14, 0.9);
+    }
+
+    header h1 {
+      font-size: 28px;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      color: #aaa;
+      margin-top: 6px;
+    }
+
+    main {
+      width: min(1100px, 94%);
+      margin: 25px auto 50px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+      background: #b3261e;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.15);
+    }
+
+    button.secondary {
+      background: #33343d;
+    }
+
+    button.danger {
+      background: #7d1717;
+    }
+
+    .section {
+      background: rgba(24, 24, 30, 0.96);
+      border: 1px solid #383840;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+
+    .section h2 {
+      margin-bottom: 18px;
+      font-size: 20px;
+      border-bottom: 1px solid #393940;
+      padding-bottom: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: #bbb;
+      font-size: 14px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #44444d;
+      border-radius: 8px;
+      padding: 11px;
+      background: #111116;
+      color: white;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #aaa;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .attribute-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .attribute {
+      background: #15151b;
+      border: 1px solid #373740;
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .attribute-name {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .attribute-row {
+      display: grid;
+      grid-template-columns: 1fr 70px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .bonus {
+      text-align: center;
+      padding: 10px;
+      background: #272731;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .aptitude-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .aptitude {
+      background: #15151b;
+      border: 1px solid #373740;
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .aptitude input {
+      text-align: center;
+      font-size: 20px;
+      margin-top: 8px;
+    }
+
+    .points {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #202027;
+      text-align: center;
+    }
+
+    .derived-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .derived {
+      text-align: center;
+      background: #15151b;
+      border: 1px solid #373740;
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .derived-name {
+      color: #aaa;
+      margin-bottom: 8px;
+    }
+
+    .derived-value {
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .skill {
+      display: grid;
+      grid-template-columns: 1fr 90px;
+      align-items: center;
+      gap: 10px;
+      background: #15151b;
+      border: 1px solid #33333c;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .jutsu {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      background: #15151b;
+      border: 1px solid #33333c;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .jutsu .full {
+      grid-column: 1 / -1;
+    }
+
+    .jutsu-remove {
+      grid-column: 1 / -1;
+      background: #622020;
+      padding: 8px;
+    }
+
+    .empty {
+      color: #888;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .save-message {
+      display: none;
+      background: #1f4026;
+      border: 1px solid #3b7547;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    @media (max-width: 750px) {
+      .grid,
+      .attribute-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .aptitude-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .grid,
+      .attribute-grid,
+      .aptitude-grid,
+      .derived-grid,
+      .skill-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .jutsu {
+        grid-template-columns: 1fr;
+      }
+
+      .jutsu .full {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🥷 Naruto RPG</h1>
+  <p>Ficha de Personagem</p>
+</header>
+
+<main>
+
+  <div class="toolbar">
+    <button onclick="saveSheet()">💾 Salvar Ficha</button>
+    <button class="secondary" onclick="newSheet()">📝 Nova Ficha</button>
+    <button class="danger" onclick="deleteSheet()">🗑️ Apagar Ficha</button>
+  </div>
+
+  <div id="saveMessage" class="save-message">
+    Ficha salva com sucesso!
+  </div>
+
+  <!-- IDENTIFICAÇÃO -->
+
+  <section class="section">
+    <h2>📜 Identificação</h2>
+
+    <div class="grid">
+
+      <div class="field">
+        <label>Nome</label>
+        <input id="nome" type="text">
+      </div>
+
+      <div class="field">
+        <label>Idade</label>
+        <input id="idade" type="number" min="0">
+      </div>
+
+      <div class="field">
+        <label>Clã</label>
+        <input id="cla" type="text">
+      </div>
+
+      <div class="field">
+        <label>Vila</label>
+        <input id="vila" type="text">
+      </div>
+
+      <div class="field">
+        <label>Patente</label>
+        <input id="patente" type="text">
+      </div>
+
+      <div class="field">
+        <label>Nível</label>
+        <input id="nivel" type="number" min="1" value="1">
+      </div>
+
+      <div class="field full">
+        <label>Aparência / Descrição</label>
+        <textarea id="aparencia"></textarea>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ATRIBUTOS -->
+
+  <section class="section">
+    <h2>💪 Atributos</h2>
+
+    <div class="attribute-grid">
+
+      <div class="attribute">
+        <div class="attribute-name">Força</div>
+        <div class="attribute-row">
+          <input id="forca" type="number" value="10" oninput="calculate()">
+          <div class="bonus" id="bonus-forca">+0</div>
+        </div>
+      </div>
+
+      <div class="attribute">
+        <div class="attribute-name">Agilidade</div>
+        <div class="attribute-row">
+          <input id="agilidade" type="number" value="10" oninput="calculate()">
+          <div class="bonus" id="bonus-agilidade">+0</div>
+        </div>
+      </div>
+
+      <div class="attribute">
+        <div class="attribute-name">Resistência</div>
+        <div class="attribute-row">
+          <input id="resistencia" type="number" value="10" oninput="calculate()">
+          <div class="bonus" id="bonus-resistencia">+0</div>
+        </div>
+      </div>
+
+      <div class="attribute">
+        <div class="attribute-name">Inteligência</div>
+        <div class="attribute-row">
+          <input id="inteligencia" type="number" value="10" oninput="calculate()">
+          <div class="bonus" id="bonus-inteligencia">+0</div>
+        </div>
+      </div>
+
+      <div class="attribute">
+        <div class="attribute-name">Percepção</div>
+        <div class="attribute-row">
+          <input id="percepcao" type="number" value="10" oninput="calculate()">
+          <div class="bonus" id="bonus-percepcao">+0</div>
+        </div>
+      </div>
+
+      <div class="attribute">
+        <div class="attribute-name">Carisma</div>
+        <div class="attribute-row">
+          <input id="carisma" type="number" value="10" oninput="calculate()">
+          <div class="bonus" id="bonus-carisma">+0</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- APTIDÕES -->
+
+  <section class="section">
+    <h2>⚡ Aptidões</h2>
+
+    <div class="aptitude-grid">
+
+      <div class="aptitude">
+        <strong>Ninjutsu</strong>
+        <input id="ninjutsu" type="number" min="0" value="0" oninput="calculateAptitudes()">
+      </div>
+
+      <div class="aptitude">
+        <strong>Genjutsu</strong>
+        <input id="genjutsu" type="number" min="0" value="0" oninput="calculateAptitudes()">
+      </div>
+
+      <div class="aptitude">
+        <strong>Taijutsu</strong>
+        <input id="taijutsu" type="number" min="0" value="0" oninput="calculateAptitudes()">
+      </div>
+
+      <div class="aptitude">
+        <strong>Reserva de Chakra</strong>
+        <input id="reserva" type="number" min="0" value="0" oninput="calculateAptitudes()">
+      </div>
+
+    </div>
+
+    <div class="points">
+      Pontos distribuídos: <strong id="aptitudeTotal">0</strong> / 5
+      <br>
+      Pontos restantes: <strong id="aptitudeRemaining">5</strong>
+    </div>
+  </section>
+
+
+  <!-- DERIVADOS -->
+
+  <section class="section">
+    <h2>❤️ Recursos Derivados</h2>
+
+    <div class="derived-grid">
+
+      <div class="derived">
+        <div class="derived-name">Vida</div>
+        <div class="derived-value" id="vida">60</div>
+      </div>
+
+      <div class="derived">
+        <div class="derived-name">Chakra</div>
+        <div class="derived-value" id="chakra">5</div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- PERÍCIAS -->
+
+  <section class="section">
+    <h2>🎯 Perícias</h2>
+
+    <div class="skill-grid">
+
+      <div class="skill">
+        <span>Infiltração</span>
+        <input id="infiltracao" type="number" value="0">
+      </div>
+
+      <div class="skill">
+        <span>Rastreamento</span>
+        <input id="rastreamento" type="number" value="0">
+      </div>
+
+      <div class="skill">
+        <span>Medicina</span>
+        <input id="medicina" type="number" value="0">
+      </div>
+
+      <div class="skill">
+        <span>Selamento</span>
+        <input id="selamento" type="number" value="0">
+      </div>
+
+      <div class="skill">
+        <span>Intuição</span>
+        <input id="intuicao" type="number" value="0">
+      </div>
+
+      <div class="skill">
+        <span>Ofício</span>
+        <input id="oficio" type="number" value="0">
+      </div>
+
+      <div class="skill">
+        <span>Sabotagem</span>
+        <input id="sabotagem" type="number" value="0">
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- JUTSUS -->
+
+  <section class="section">
+    <h2>🥋 Jutsus</h2>
+
+    <div id="jutsus"></div>
+
+    <button class="secondary" onclick="addJutsu()">
+      + Adicionar Jutsu
+    </button>
+  </section>
+
+
+  <!-- OBSERVAÇÕES -->
+
+  <section class="section">
+    <h2>📖 Observações</h2>
+
+    <textarea id="observacoes"
+      placeholder="Anotações sobre o personagem..."></textarea>
+  </section>
+
+</main>
+
+
+<script>
+
+  const fields = [
+    "nome",
+    "idade",
+    "cla",
+    "vila",
+    "patente",
+    "nivel",
+    "aparencia",
+    "forca",
+    "agilidade",
+    "resistencia",
+    "inteligencia",
+    "percepcao",
+    "carisma",
+    "ninjutsu",
+    "genjutsu",
+    "taijutsu",
+    "reserva",
+    "infiltracao",
+    "rastreamento",
+    "medicina",
+    "selamento",
+    "intuicao",
+    "oficio",
+    "sabotagem",
+    "observacoes"
+  ];
+
+
+  function getNumber(id) {
+    return Number(document.getElementById(id).value) || 0;
+  }
+
+
+  function attributeBonus(value) {
+    return Math.floor((value - 10) / 5);
+  }
+
+
+  function formatBonus(value) {
+    return value >= 0 ? "+" + value : value;
+  }
+
+
+  function calculate() {
+
+    const attributes = [
+      "forca",
+      "agilidade",
+      "resistencia",
+      "inteligencia",
+      "percepcao",
+      "carisma"
+    ];
+
+    attributes.forEach(attribute => {
+
+      const value = getNumber(attribute);
+      const bonus = attributeBonus(value);
+
+      document.getElementById("bonus-" + attribute).textContent =
+        formatBonus(bonus);
+
+    });
+
+
+    const resistencia = getNumber("resistencia");
+    const nivel = getNumber("nivel");
+
+    const vida = 10 + (resistencia * 5);
+
+    const reserva = getNumber("reserva");
+    const chakra = (reserva * nivel) + 5;
+
+    document.getElementById("vida").textContent = vida;
+    document.getElementById("chakra").textContent = chakra;
+  }
+
+
+  function calculateAptitudes() {
+
+    const total =
+      getNumber("ninjutsu") +
+      getNumber("genjutsu") +
+      getNumber("taijutsu") +
+      getNumber("reserva");
+
+    document.getElementById("aptitudeTotal").textContent = total;
+
+    const remaining = 5 - total;
+
+    document.getElementById("aptitudeRemaining").textContent =
+      remaining;
+
+    if (remaining < 0) {
+      document.getElementById("aptitudeRemaining").style.color = "#ff5555";
+    } else {
+      document.getElementById("aptitudeRemaining").style.color = "";
+    }
+
+    calculate();
+  }
+
+
+  function addJutsu(data = {}) {
+
+    const container = document.getElementById("jutsus");
+
+    const div = document.createElement("div");
+
+    div.className = "jutsu";
+
+    div.innerHTML = `
+      <div class="field">
+        <label>Nome do Jutsu</label>
+        <input class="jutsu-name" type="text"
+          value="${escapeHTML(data.name || "")}">
+      </div>
+
+      <div class="field">
+        <label>Custo de Chakra</label>
+        <input class="jutsu-cost" type="number"
+          min="0" value="${data.cost ?? 0}">
+      </div>
+
+      <div class="field full">
+        <label>Selos / Informações</label>
+        <input class="jutsu-seals" type="text"
+          value="${escapeHTML(data.seals || "")}">
+      </div>
+
+      <div class="field full">
+        <label>Observações</label>
+        <textarea class="jutsu-notes">${escapeHTML(data.notes || "")}</textarea>
+      </div>
+
+      <button class="jutsu-remove" onclick="this.parentElement.remove()">
+        Remover Jutsu
+      </button>
+    `;
+
+    container.appendChild(div);
+  }
+
+
+  function escapeHTML(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  function getSheetData() {
+
+    const data = {};
+
+    fields.forEach(id => {
+
+      const element = document.getElementById(id);
+
+      data[id] = element.value;
+
+    });
+
+
+    data.jutsus = [];
+
+    document.querySelectorAll(".jutsu").forEach(jutsu => {
+
+      data.jutsus.push({
+
+        name: jutsu.querySelector(".jutsu-name").value,
+
+        cost: jutsu.querySelector(".jutsu-cost").value,
+
+        seals: jutsu.querySelector(".jutsu-seals").value,
+
+        notes: jutsu.querySelector(".jutsu-notes").value
+
+      });
+
+    });
+
+
+    return data;
+  }
+
+
+  function saveSheet() {
+
+    const data = getSheetData();
+
+    localStorage.setItem(
+      "narutoRpgFicha",
+      JSON.stringify(data)
+    );
+
+    const message = document.getElementById("saveMessage");
+
+    message.style.display = "block";
+
+    setTimeout(() => {
+      message.style.display = "none";
+    }, 2500);
+  }
+
+
+  function loadSheet() {
+
+    const saved = localStorage.getItem("narutoRpgFicha");
+
+    if (!saved) {
+      calculate();
+      calculateAptitudes();
+      return;
+    }
+
+    const data = JSON.parse(saved);
+
+    fields.forEach(id => {
+
+      if (data[id] !== undefined) {
+        document.getElementById(id).value = data[id];
+      }
+
+    });
+
+
+    document.getElementById("jutsus").innerHTML = "";
+
+    if (data.jutsus) {
+
+      data.jutsus.forEach(jutsu => {
+        addJutsu(jutsu);
+      });
+
+    }
+
+    calculate();
+    calculateAptitudes();
+  }
+
+
+  function newSheet() {
+
+    if (!confirm("Criar uma nova ficha? Os dados atuais serão apagados.")) {
+      return;
+    }
+
+    localStorage.removeItem("narutoRpgFicha");
+
+    location.reload();
+  }
+
+
+  function deleteSheet() {
+
+    if (!confirm("Tem certeza que deseja apagar a ficha salva?")) {
+      return;
+    }
+
+    localStorage.removeItem("narutoRpgFicha");
+
+    alert("Ficha apagada.");
+
+    location.reload();
+  }
+
+
+  loadSheet();
+
+</script>
+
+</body>
+</html>
