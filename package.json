@@ -1,0 +1,9 @@
+{
+  "name": "naruto-rpg-ficha",
+  "version": "1.0.0",
+  "description": "Ficha digital para o sistema de RPG Naruto",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
